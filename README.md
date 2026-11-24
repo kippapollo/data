@@ -1,3 +1,8 @@
+# Industrial AI (South man)
+
+- [Open-source software and model downloads](industrial-ai-downloads.md)
+- [CubeStudio industrial AI architecture](industrial-ai-open-source-architecture.html)
+
 # Delaunay C++
 https://github.com/delfrrr/delaunator-cpp
 
@@ -24,8 +29,3 @@ https://github.com/amusi/SIFT-GPU
 https://github.com/alicevision/popsift
 
 https://github.com/Celebrandil/CudaSift
-
-# Industrial AI
-
-- [Open-source software and model downloads](industrial-ai-downloads.md)
-- [CubeStudio industrial AI architecture](industrial-ai-open-source-architecture.html)
