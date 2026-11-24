@@ -1,7 +1,7 @@
 # Industrial AI (South man)
 
 - [Open-source software and model downloads](industrial-ai-downloads.md)
-- [Datasets for CubeStudio training recipes](industrial-ai-downloads.md#datasets-for-cubestudio)
+- [CubeStudio datasets for industrial images, audio, text, sensor time series and serial captures](industrial-ai-downloads.md#datasets-for-cubestudio)
 - [CubeStudio industrial AI architecture](industrial-ai-open-source-architecture.html)
 
 # Delaunay C++

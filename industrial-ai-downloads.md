@@ -17,6 +17,8 @@ The optional LLM path names vLLM and orchestration libraries. It leaves the mode
 
 ## Datasets for CubeStudio
 
+[Industrial images](#industrial-images) · [Machine and tool audio](#machine-and-tool-audio) · [Maintenance and safety text](#maintenance-and-safety-text) · [Sensor time series and serial-bus captures](#sensor-time-series-and-serial-bus-captures)
+
 Start with CubeStudio’s two example CSVs to check the training and prediction workflow. For a first industrial task, the steel-energy CSV needs only two columns for ARIMA. The bearing recordings are a closer match for the motor pilot and require a preprocessing step.
 
 | Dataset | Recipe | Prepare the training and evaluation data | Downloads and source |
@@ -28,6 +30,36 @@ Start with CubeStudio’s two example CSVs to check the training and prediction 
 | Case Western Reserve University bearing vibration | Custom 1D CNN for motor faults | The two sample MAT files contain 12 kHz drive-end recordings at zero motor load. Extract the channel ending in `_DE_time` and label it by defect type. For evaluation, download additional runs and assign whole recordings to splits before cutting them into windows. | [Inner-race fault MAT](https://engineering.case.edu/sites/default/files/105.mat) · [Ball fault MAT](https://engineering.case.edu/sites/default/files/118.mat) · [All 12 kHz drive-end runs](https://engineering.case.edu/bearingdatacenter/12k-drive-end-bearing-fault-data) |
 | Condition Monitoring of Hydraulic Systems | Random Forest component-condition classification | Each row in a sensor file represents one 60-second test cycle. Compute per-cycle features and join them by row to `profile.txt`. For valve condition, use the second profile column as the target. | [Sensor matrices and labels (ZIP)](https://archive.ics.uci.edu/static/public/447/condition+monitoring+of+hydraulic+systems.zip) · [UCI dataset and license](https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems) |
 | Biomass properties and gasification results | Custom tabular regression for syngas composition | Predict `volH2 (%)` from feedstock properties and operating inputs such as temperature and steam-to-biomass ratio. Exclude all gas composition and yield outputs from the inputs. Hold out entire biomass types to test transfer to a new feedstock. | [Gasification CSV](https://zenodo.org/records/7358117/files/data_GASIF_biomass.csv) · [Authors’ dataset record](https://zenodo.org/records/7358117) |
+
+### Industrial images
+
+| Dataset | CubeStudio task and evaluation | Downloads and source |
+| --- | --- | --- |
+| KolektorSDD2 | Locate surface defects on production parts. The dataset contains 356 images with defects and 2,979 without. Keep the supplied train/test split and use the masks to score localization and report recall on the defective test parts separately. | [Dataset ZIP](https://go.vicos.si/kolektorsdd2) · [ViCoS dataset and license (CC BY-NC-SA 4.0)](https://vicos.si/resources/kolektorsdd2/) |
+| Magnetic Tile Defects | Segment defects such as cracks and blowholes. Pair each JPEG with the same-stem PNG mask. The folder identifies the defect type, and `MT_Free` supplies defect-free examples. | [Images and masks ZIP](https://codeload.github.com/abin24/Magnetic-tile-defect-datasets./zip/cc4eb530b57b9cb7225bf76023873043ffd50655) · [Authors’ dataset and citation](https://github.com/abin24/Magnetic-tile-defect-datasets.) |
+
+### Machine and tool audio
+
+| Dataset | CubeStudio task and evaluation | Downloads and source |
+| --- | --- | --- |
+| ESC-50 tool and engine sounds | Try the audio pipeline with one five-second WAV. For sound classification, select `chainsaw`, `hand_saw` and `engine` in the metadata CSV and use the supplied folds to keep clips from the same source recording together. | [Chainsaw WAV](https://raw.githubusercontent.com/karolpiczak/ESC-50/33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6/audio/1-116765-A-41.wav) · [Labels and folds CSV](https://raw.githubusercontent.com/karolpiczak/ESC-50/33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6/meta/esc50.csv) · [Full dataset and clip licenses](https://github.com/karolpiczak/ESC-50) |
+| MIMII machine sounds | Detect abnormal fan, pump, valve or slide-rail operation. Start with one machine type and noise level. Fit on normal clips and score held-out normal and anomalous clips by machine ID. | [Fan WAVs at +6 dB (10.2 GB ZIP)](https://zenodo.org/records/3384388/files/6_dB_fan.zip) · [All machines and noise levels (CC BY-SA 4.0)](https://zenodo.org/records/3384388) |
+| Fraunhofer IDMT-ISA Compressed Air | Evaluate leak detection on 48 kHz mono recordings from a compressed-air test rig. Hold out entire recording sessions so different microphones observing the same event stay together. | [Vent-leak recordings (7.0 GB ZIP)](https://zenodo.org/records/7551606/files/IDMT-ISA-COMPRESSED-AIR-VENTLEAK.zip) · [All leak types](https://zenodo.org/records/7551606) · [Fraunhofer evaluation terms (CC BY-NC-ND 4.0)](https://www.idmt.fraunhofer.de/en/publications/datasets/isa-compressed-air.html) |
+
+### Maintenance and safety text
+
+| Dataset | CubeStudio task and evaluation | Downloads and source |
+| --- | --- | --- |
+| MaintNorm mining work orders | Normalize maintenance shorthand in 12,000 short texts from three Australian mining and mineral-processing organizations. Each nonblank line pairs an original token with its annotated target, and blank lines separate work orders. Use the published splits to evaluate abbreviation expansion. | [Training pairs](https://raw.githubusercontent.com/nlp-tlp/maintnorm/e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8/data/combined/train.norm) · [Validation pairs](https://raw.githubusercontent.com/nlp-tlp/maintnorm/e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8/data/combined/val.norm) · [Test pairs](https://raw.githubusercontent.com/nlp-tlp/maintnorm/e98ca406f7afffbb0ab3243aa7c922f3b64bc7c8/data/combined/test.norm) · [Corpus guide](https://github.com/nlp-tlp/maintnorm/blob/main/DATA.md) |
+| NASA ASRS aviation maintenance reports | Build a search index over 50 de-identified reports from aircraft maintenance personnel. Extract the PDF text, keep each report’s accession number as its document ID, and use the synopsis as a retrieval query against the narrative. | [Maintenance report set (PDF)](https://asrs.arc.nasa.gov/docs/rpsts/mechanic.pdf) · [NASA report sets and selection criteria](https://asrs.arc.nasa.gov/search/reportsets.html) |
+
+### Sensor time series and serial-bus captures
+
+| Dataset | CubeStudio task and evaluation | Downloads and source |
+| --- | --- | --- |
+| MetroPT-3 railway air compressor | Detect air leaks in service using 15 pressure, temperature, current and digital signals. Fit on the first month, score later timestamps, and compare alarms with the failure intervals in the UCI record. | [Sensor CSV and description (ZIP)](https://archive.ics.uci.edu/static/public/791/metropt+3+dataset.zip) · [UCI failure intervals and license](https://archive.ics.uci.edu/dataset/791/metropt+3+dataset) |
+| Gas Sensor Array under Dynamic Gas Mixtures | Estimate gas concentration set points from 16 sensor readings. The two text files cover ethylene mixed with methane or carbon monoxide. Train and test on separate contiguous periods of each run. The depositors specify research use. | [Time series (ZIP)](https://archive.ics.uci.edu/static/public/322/gas+sensor+array+under+dynamic+gas+mixtures.zip) · [UCI column definitions and use terms](https://archive.ics.uci.edu/dataset/322/gas+sensor+array+under+dynamic+gas+mixtures) |
+| sigrok Brainchild IO-16DO Modbus RTU | Check a serial-data ingestion pipeline with a short, two-channel logic capture. The analyzer sampled receive and transmit on the RS-232 side of an RS-485 converter at 1 MHz. Decode the saved capture offline into timestamped Modbus frames for a test table. | [Original sigrok session (.sr)](https://raw.githubusercontent.com/sigrokproject/sigrok-dumps/0ad13477abc959d37fc9a5acbd23901c371c9c76/uart/modbus_rtu/brainchild_io_16do/brainchild-io-16do.sr) · [Capture setup and channel mapping](https://github.com/sigrokproject/sigrok-dumps/blob/0ad13477abc959d37fc9a5acbd23901c371c9c76/uart/modbus_rtu/brainchild_io_16do/README) |
 
 ## Example models for sector simulations
 
